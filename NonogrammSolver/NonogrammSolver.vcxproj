@@ -142,11 +142,13 @@
     <ClCompile Include="decision_base.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
+    <ClCompile Include="unit_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="decision_base.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="solver.h" />
+    <ClInclude Include="Tests.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
