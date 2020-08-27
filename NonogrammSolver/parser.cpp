@@ -2,6 +2,7 @@
 #include "parser.h"
 
 namespace Parser {
+	const int MAX_BOARD_SIZE = 15;
 
 	bool ValidateBoard(const std::vector<std::string>& board) {
 		bool checker = true;
@@ -47,12 +48,15 @@ namespace Parser {
 		else if (game_board.size() != mask.size()) {
 			error = ErrorMsg::COMPOSE_ERROR;
 		}
+		else if (game_board.size() > MAX_BOARD_SIZE) {
+			error = ErrorMsg::INVALID_SIZE;
+		}
 
 		if (error == ErrorMsg::OK) {
 			decision_base = DecisionBase::DecisionBaseBuilder()
 				.SetSize(mask.size())
-				.SetGameBoard(DecisionBase::ConvertBoardFromStrings(game_board, '*'))
-				.SetMask(DecisionBase::ConvertBoardFromStrings(mask, '*'))
+				.SetGameBoard(ConvertBoardFromStrings(game_board, '*'))
+				.SetMask(ConvertBoardFromStrings(mask, '*'))
 				.Build();
 		}
 		else {

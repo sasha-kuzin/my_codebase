@@ -7,7 +7,8 @@ namespace Parser{
 		OK = 0,
 		INVALID_GAMEBOARD = 1,
 		INVALID_MASK = 2,
-		COMPOSE_ERROR = 3
+		COMPOSE_ERROR = 3,
+		INVALID_SIZE = 4
 	};
 	struct ParserResponse {
 		ErrorMsg error;
