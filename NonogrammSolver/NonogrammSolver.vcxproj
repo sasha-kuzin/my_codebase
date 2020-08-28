@@ -139,9 +139,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="build_solver_unit_test.cpp" />
+    <ClCompile Include="crypted_position_unit_test.cpp" />
     <ClCompile Include="decision_base.cpp" />
+    <ClCompile Include="decision_base_unit_test.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
+    <ClCompile Include="parser_unit_test.cpp" />
+    <ClCompile Include="solver.cpp" />
     <ClCompile Include="unit_tests.cpp" />
   </ItemGroup>
   <ItemGroup>
