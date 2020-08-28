@@ -4,6 +4,14 @@
 namespace Parser {
 	const int MAX_BOARD_SIZE = 15;
 
+	const std::unordered_map<ErrorMsg, std::string> error_to_string = {
+		{ErrorMsg::OK, "OK"},
+		{ErrorMsg::INVALID_GAMEBOARD, "Invalid gameboard"},
+		{ErrorMsg::INVALID_MASK, "Invalid mask"},
+		{ErrorMsg::INVALID_SIZE, "Invalid size"},
+		{ErrorMsg::COMPOSE_ERROR, "Compose Error: mask doesn't match game_board"},
+	};
+
 	bool ValidateBoard(const std::vector<std::string>& board) {
 		bool checker = true;
 
@@ -25,9 +33,8 @@ namespace Parser {
 		return checker;
 	}
 
-	DecisionBase::Matrix<bool> ConvertBoardFromStrings(const std::vector<std::string> strings, char sym_true) {
-		DecisionBase::Matrix<bool> result;
-		result.reserve(strings.size());
+	DecisionBase::Matrix<bool> ConvertBoardFromStrings(const std::vector<std::string>& strings, char sym_true) {
+		DecisionBase::Matrix<bool> result(strings.size());
 		for (int i = 0; i < result.size(); ++i) {
 			result[i].reserve(strings.size());
 			for (char elem : strings[i]) {
@@ -64,4 +71,9 @@ namespace Parser {
 		}
 	}
 
+
+	std::ostream& operator << (std::ostream& output, ErrorMsg err) {
+		output << error_to_string.at(err);
+		return output;
+	}
 }

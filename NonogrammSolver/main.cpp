@@ -1,5 +1,8 @@
 #include "Tests.h"
 #include "parser.h"
+#include "solver.h"
+
+#include <variant>
 using namespace std;
 
 void TestAll();

@@ -1,6 +1,10 @@
 #pragma once
 #include "decision_base.h"
 #include <optional>
+#include <variant>
+#include <unordered_map>
+#include <string>
+#include <iostream>
 
 namespace Parser{
 	enum class ErrorMsg {
@@ -10,6 +14,9 @@ namespace Parser{
 		COMPOSE_ERROR = 3,
 		INVALID_SIZE = 4
 	};
+
+	std::ostream& operator << (std::ostream& output, ErrorMsg err);
+
 	struct ParserResponse {
 		ErrorMsg error;
 		std::optional <DecisionBase::DecisionBase> decision_base; 

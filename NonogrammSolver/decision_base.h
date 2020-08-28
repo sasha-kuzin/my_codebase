@@ -10,6 +10,7 @@ namespace DecisionBase {
 		size_t size;
 		Matrix<int> rows;
 		Matrix<int> columns;
+		CryptedPosition() = default;
 		CryptedPosition(size_t);
 		void CutZeroesAndShrink();
 	};
@@ -30,6 +31,7 @@ namespace DecisionBase {
 		Matrix<int> GetMaskedBoard() const;
 		std::vector<std::string> PrintMaskedBoard() const;
 
+		size_t GetSize() const;
 	private:
 		template <typename T, typename Container>
 		std::vector<Container> CombineBoardAndMask(T filled, T empty, T undefined) const {

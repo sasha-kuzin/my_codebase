@@ -76,8 +76,8 @@ namespace DecisionBase {
 
 	CryptedPosition::CryptedPosition(size_t size) :
 		size(size) {
-		columns.reserve(size);
-		rows.reserve(size);
+		columns.resize(size);
+		rows.resize(size);
 
 		for (std::size_t i = 0; i < size; ++i) {
 			rows[i].reserve(size);
@@ -89,11 +89,14 @@ namespace DecisionBase {
 	}
 
 	template <typename T>
-	void PopValuesAndShrink(std::vector<T> vect, const T& value = T()) {
+	void PopValuesAndShrink(std::vector<T>& vect, const T& value = T()) {
 		if (vect.back() == value) {
 			vect.pop_back();
 		}
 		vect.shrink_to_fit();
+		if (vect.empty()) {
+			vect.push_back(value);
+		}
 	}
 
 	void CryptedPosition::CutZeroesAndShrink() {
@@ -110,5 +113,9 @@ namespace DecisionBase {
 
 	std::vector<std::string> DecisionBase::PrintMaskedBoard() const{
 		return CombineBoardAndMask<char, std::string>('*', '.', '?');
+	}
+
+	size_t DecisionBase::GetSize() const {
+		return size;
 	}
 }
