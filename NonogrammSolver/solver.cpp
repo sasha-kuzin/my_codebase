@@ -33,6 +33,22 @@ namespace Solver {
 		return pos == checker.size();
 	}
 
+	bool ValidateSolution(int solution, const std::vector<int>& game_row) {
+		for (auto i = 0; i < game_row.size(); ++i) {
+			if (game_row[i] == 1) {
+				if ((solution & (1 << i)) == 0) {
+					return false;
+				}
+			}
+			if (game_row[i] == 0) {
+				if ((solution & (1 << i)) == 1) {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
 	Solver::Row::Row(size_t length, std::vector<int> game_row, const std::vector<int>& figures_lengths):
 	figures_lengths(figures_lengths),
 	game_row(move(game_row)){
@@ -67,11 +83,115 @@ namespace Solver {
 			horizontal_solver.push_back({ size, move(game_board[i]), crypted_position.rows[i] });
 			vertical_solver.push_back({ size, move(inverted_board[i]), crypted_position.columns[i] });
 		}
+		status = Status::INIT;
 	}
 
 	bool Solver::CompareSolutionsSet(Dimension dimension, size_t index, const std::set<int>& solutions) const{
 		return (dimension == Dimension::horizontal ? 
 			horizontal_solver[index].solutions == solutions : 
 			vertical_solver[index].solutions == solutions);
+	}
+
+	Solver& Solver::Solve() {
+		status = Status::IN_PROCESS;
+		while (status == Status::IN_PROCESS) {
+			status = RunSolveIteration();
+		}
+
+		if (status == Status::SOLVED) {
+			solution = Matrix<bool>(size);
+			for (auto i = 0; i < size; ++i) {
+				solution.value()[i] = horizontal_solver[i].AsBooleanRow();
+			}
+		}
+		return *this;
+	}
+
+	std::vector<bool> Solver::Row::AsBooleanRow() const {
+		std::vector<bool> result(game_row.size());
+		for (auto i = 0; i < game_row.size(); ++i) {
+			result[i] = static_cast<bool>(game_row[i]);
+		}
+		return move(result);
+	}
+
+	Status Solver::RunSolveIteration() {
+		for (auto i = 0; i < size; ++i) {
+			if (horizontal_solver[i].DistillateSolutions()) {
+				for (auto j = 0; j < size; ++j) {
+					vertical_solver[j].game_row[i] = horizontal_solver[i].game_row[j];
+				}
+			}
+		}
+
+		bool was_modifyed = false;
+		for (auto i = 0; i < size; ++i) {
+			if (vertical_solver[i].DistillateSolutions()) {
+				was_modifyed = true;
+				for (auto j = 0; j < size; ++j) {
+					horizontal_solver[j].game_row[i] = vertical_solver[i].game_row[j];
+				}
+			}
+		}
+
+		if (was_modifyed) {
+			return Status::IN_PROCESS;
+		}
+		else {
+			return (CheckUniqueSolution() ? Status::SOLVED : Status::NO_SOLUTION);
+		}
+	}
+
+	bool Solver::CheckUniqueSolution() {
+		bool result = true;
+		for (auto& elem : horizontal_solver) {
+			result = (result && elem.solutions.size() == 1);
+		}
+		return result;
+	}
+
+	bool Solver::Row::DistillateSolutions() {
+		std::set<int> old_solutions = move(solutions);
+		int colored_mask = (1 << game_row.size()) - 1;
+		int empty_mask = 0;
+		for (auto solution : old_solutions) {
+			if (ValidateSolution(solution, game_row)) {
+				solutions.insert(solution);
+				colored_mask &= solution;
+				empty_mask |= solution;
+			}
+		}
+
+		bool result_flag = false;
+		for (auto i = 0; i < game_row.size(); ++i) {
+
+			int checker = (1 << i);
+
+			if ((colored_mask & checker) == checker) {
+				if (game_row[i] == -1) {
+					result_flag = true;
+					game_row[i] = 1;
+				}
+				else if (game_row[i] == 0) {
+					throw new std::invalid_argument("Gameboard has a conflict");
+				}
+			}
+
+			if ((empty_mask & checker) == 0) {
+				if (game_row[i] == -1) {
+					result_flag = true;
+					game_row[i] = 0;
+				}
+				else if (game_row[i] == 1) {
+					throw new std::invalid_argument("Gameboard has a conflict");
+				}
+			}
+		}
+
+		return result_flag;
+	}
+
+	Status Solver::GetSolutionStatus() const {
+		return status;
 	}
 }

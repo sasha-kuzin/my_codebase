@@ -146,6 +146,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="parser.cpp" />
     <ClCompile Include="parser_unit_test.cpp" />
+    <ClCompile Include="run_solver_unit_tests.cpp" />
     <ClCompile Include="solver.cpp" />
     <ClCompile Include="unit_tests.cpp" />
   </ItemGroup>
