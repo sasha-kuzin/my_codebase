@@ -46,6 +46,7 @@ namespace Solver {
 		Solver& Solve();
 
 		Status GetSolutionStatus() const;
+		std::optional<std::vector<std::string>> GetSolution() const;
 
 		//this function only for testing
 		bool CompareSolutionsSet(Dimension dimension, size_t index, const std::set<int>& solutions) const;

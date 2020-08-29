@@ -48,12 +48,29 @@ void TestEmptyRun() {
 
 void TestUsualRun() {
 	vector <string> game_board = {
-		"*.*.",
-		".*.*",
-		"**.*",
-		".***"
+		"..******..",
+		".********.",
+		"**....****",
+		"**...*****",
+		"**..***.**",
+		"**.***..**",
+		"*****...**",
+		"****....**",
+		".********.",
+		"..******.."
 	};
-	vector <string> mask = game_board;
+	vector <string> mask = {
+		"..........",
+		"..........",
+		"**........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		".........*",
+		"..........",
+		".........."
+	};
 
 	DecisionBase::DecisionBase base = Parser::ParserResponse(game_board, mask).decision_base.value();
 	Solver::Solver solver(base);
@@ -64,14 +81,28 @@ void TestUsualRun() {
 
 void TestNoSolutionRun() {
 	vector <string> game_board = {
-		"*..",
-		".*.",
-		"..*",
+		"..******..",
+		".********.",
+		"**....****",
+		"**...*****",
+		"**..***.**",
+		"**.***..**",
+		"*****...**",
+		"****....**",
+		".********.",
+		"..******.."
 	};
 	vector <string> mask = {
-		"...",
-		"...",
-		"..."
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		"..........",
+		".........."
 	};
 
 	DecisionBase::DecisionBase base = Parser::ParserResponse(game_board, mask).decision_base.value();

@@ -41,7 +41,7 @@ namespace Solver {
 				}
 			}
 			if (game_row[i] == 0) {
-				if ((solution & (1 << i)) == 1) {
+				if ((solution & (1 << i))!= 0) {
 					return false;
 				}
 			}
@@ -116,15 +116,17 @@ namespace Solver {
 	}
 
 	Status Solver::RunSolveIteration() {
+		bool was_modifyed = false;
 		for (auto i = 0; i < size; ++i) {
 			if (horizontal_solver[i].DistillateSolutions()) {
+				was_modifyed = true;
 				for (auto j = 0; j < size; ++j) {
 					vertical_solver[j].game_row[i] = horizontal_solver[i].game_row[j];
 				}
 			}
 		}
 
-		bool was_modifyed = false;
+		
 		for (auto i = 0; i < size; ++i) {
 			if (vertical_solver[i].DistillateSolutions()) {
 				was_modifyed = true;
@@ -193,5 +195,22 @@ namespace Solver {
 
 	Status Solver::GetSolutionStatus() const {
 		return status;
+	}
+
+	std::optional<std::vector<std::string>> Solver::GetSolution() const {
+		if (status == Status::SOLVED) {
+			std::vector<std::string> result(size);
+			for (auto i = 0; i < size; ++i) {
+				result[i].reserve(size);
+				for (auto elem : solution.value()[i]) {
+					result[i].push_back(elem ? '*' : '.');
+				}
+			}
+
+			return move(result);
+		}
+		else {
+			return std::nullopt;
+		}
 	}
 }
