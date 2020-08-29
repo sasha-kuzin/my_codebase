@@ -7,6 +7,7 @@ void TestDecisionBuilder();
 void TestParser();
 void TestCryptedPositions();
 void TestSolverBuild();
+void TestSolverRun();
 
 void TestAll() {
 	TestRunner tr;
@@ -14,4 +15,5 @@ void TestAll() {
 	tr.RunTest(TestParser, "Test Parser");
 	tr.RunTest(TestCryptedPositions, "Test Crypted Position");
 	tr.RunTest(TestSolverBuild, "Test Solver Build");
+	tr.RunTest(TestSolverRun, "Test Solver Run");
 }

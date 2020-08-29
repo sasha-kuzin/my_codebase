@@ -42,6 +42,9 @@
     <ClCompile Include="build_solver_unit_test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="run_solver_unit_tests.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="solver.h">
