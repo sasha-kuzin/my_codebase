@@ -4,6 +4,7 @@
 #include <string>
 #include <optional>
 #include <algorithm>
+#include <numeric>
 #include <stdexcept>
 #include "decision_base.h"
 
@@ -43,6 +44,10 @@ namespace Solver {
 		
 	public:
 		Solver(const DecisionBase::DecisionBase& base);
+
+		//accidental idea
+		Solver(size_t size, Matrix<int> horizontal,Matrix<int> vertical);
+
 		Solver& Solve();
 
 		Status GetSolutionStatus() const;
