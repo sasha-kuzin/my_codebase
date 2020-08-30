@@ -41,7 +41,7 @@ namespace Solver {
 				}
 			}
 			if (game_row[i] == 0) {
-				if ((solution & (1 << i)) == 1) {
+				if ((solution & (1 << i)) != 0) {
 					return false;
 				}
 			}
@@ -58,6 +58,26 @@ namespace Solver {
 				solutions.insert(i);
 			}
 		}
+	}
+
+	Solver::Solver(size_t size, Matrix<int> horizontal, Matrix<int> vertical):
+	size(size)
+	{
+		horizontal_solver.reserve(size);
+		vertical_solver.reserve(size);
+		for (auto i = 0; i < size; ++i) {
+			if (std::accumulate(begin(horizontal[i]), end(horizontal[i]), 0) + horizontal[i].size() - 1 > size) {
+				throw std::invalid_argument("summary length of the elements larger than gameboard");
+			}
+			horizontal_solver.push_back({ size, std::vector<int>(size, -1), move(horizontal[i]) });
+		}
+		for (auto i = 0; i < size; ++i) {
+			if (std::accumulate(begin(vertical[i]), end(vertical[i]), 0) + vertical[i].size() - 1 > size) {
+				throw std::invalid_argument("summary length of the elements larger than gameboard");
+			}
+			vertical_solver.push_back({ size, std::vector<int>(size, -1), move(vertical[i]) });
+		}
+		status = Status::INIT;
 	}
 
 
@@ -116,15 +136,17 @@ namespace Solver {
 	}
 
 	Status Solver::RunSolveIteration() {
+		bool was_modifyed = false;
 		for (auto i = 0; i < size; ++i) {
 			if (horizontal_solver[i].DistillateSolutions()) {
+				was_modifyed = true;
 				for (auto j = 0; j < size; ++j) {
 					vertical_solver[j].game_row[i] = horizontal_solver[i].game_row[j];
 				}
 			}
 		}
 
-		bool was_modifyed = false;
+		
 		for (auto i = 0; i < size; ++i) {
 			if (vertical_solver[i].DistillateSolutions()) {
 				was_modifyed = true;
@@ -193,5 +215,22 @@ namespace Solver {
 
 	Status Solver::GetSolutionStatus() const {
 		return status;
+	}
+
+	std::optional<std::vector<std::string>> Solver::GetSolution() const {
+		if (status == Status::SOLVED) {
+			std::vector<std::string> result(size);
+			for (auto i = 0; i < size; ++i) {
+				result[i].reserve(size);
+				for (auto elem : solution.value()[i]) {
+					result[i].push_back(elem ? '*' : '.');
+				}
+			}
+
+			return move(result);
+		}
+		else {
+			return std::nullopt;
+		}
 	}
 }
