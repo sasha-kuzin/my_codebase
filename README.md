@@ -157,7 +157,7 @@ Solver(size_t size, Matrix<int> horizontal,Matrix<int> vertical);
 [:arrow_up:Оглавление](#Оглавление)
 ____
 
-### NonogrammSolver(beta)
+### NonogramSolver(beta)
 
 Чем будет отличаться данная версия от описанной выше:
 - [ ] функционал. Программа в качестве входных данных должна принимать только маску и зашифрованное положение блоков.
