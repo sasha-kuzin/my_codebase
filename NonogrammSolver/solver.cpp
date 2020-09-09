@@ -94,7 +94,7 @@ namespace Solver {
 					std::swap(result[i][j], result[j][i]);
 				}
 			}
-			return move(result);
+			return result;
 		};
 		Matrix<int> inverted_board = InvertBoard(game_board);
 
@@ -132,7 +132,7 @@ namespace Solver {
 		for (auto i = 0; i < game_row.size(); ++i) {
 			result[i] = static_cast<bool>(game_row[i]);
 		}
-		return move(result);
+		return result;
 	}
 
 	Status Solver::RunSolveIteration() {

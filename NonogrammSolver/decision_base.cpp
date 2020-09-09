@@ -69,7 +69,7 @@ namespace DecisionBase {
 		return *this;
 	}
 	DecisionBaseBuilder& DecisionBaseBuilder::SetMask(Matrix<bool>&& mask) {
-		this->mask = move(mask);
+		this->mask = std::move(mask);
 		return *this;
 	}
 
