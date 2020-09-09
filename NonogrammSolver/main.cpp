@@ -45,7 +45,7 @@ vector<string> ParseBoard(istream& in, size_t size) {
 		}
 		game_board.push_back(buf);
 	}
-	return move(game_board);
+	return game_board;
 }
 
 void MainAction(istream& in, ostream& out) {
@@ -82,7 +82,7 @@ vector<vector <int>> ReadMatrix(istream& in, size_t sz) {
 			in >> e;
 		}
 	}
-	return move(result);
+	return result;
 }
 
 string PrintVector(size_t max_size, const vector<int>& vect) {

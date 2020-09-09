@@ -41,7 +41,7 @@ namespace Parser {
 				result[i].push_back(elem == sym_true);
 			}
 		}
-		return move(result);
+		return result;
 	}
 
 	ParserResponse::ParserResponse(const std::vector<std::string>& game_board, const std::vector<std::string>& mask) {

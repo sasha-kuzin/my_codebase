@@ -227,7 +227,7 @@ namespace Solver {
 				}
 			}
 
-			return move(result);
+			return result;
 		}
 		else {
 			return std::nullopt;

@@ -29,7 +29,7 @@ namespace DecisionBase {
 		}
 
 		result.CutZeroesAndShrink();
-		return std::move(result);
+		return result;
 	}
 
 	const Matrix<bool>& DecisionBase::GetBoard() {
@@ -45,7 +45,7 @@ namespace DecisionBase {
 				result[i].push_back(elem ? '*' : '.');
 			}
 		}
-		return std::move(result);
+		return result;
 	}
 
 	DecisionBaseBuilder& DecisionBaseBuilder::SetSize(std::size_t size) {
